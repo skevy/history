@@ -1,4 +1,6 @@
 .nojekyll
+latest
+package.json
 scripts
 stable
 v*
