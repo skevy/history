@@ -1,13 +1,5 @@
 {
-  "version": "1.4.0",
   "private": true,
-  "scripts": {
-    "clean-docs": "rimraf _book",
-    "build-docs": "gitbook build -g rackt/history",
-    "serve-docs": "gitbook serve",
-    "publish-docs": "npm run clean-docs && npm run build-docs && cd _book && git init && git commit --allow-empty -m 'Publish docs' && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'Publish docs' && git push git@github.com:rackt/history gh-pages --force"
-  },
-  "license": "MIT",
   "dependencies": {
     "gitbook-cli": "^0.3.4",
     "gitbook-plugin-github": "^1.0.1",

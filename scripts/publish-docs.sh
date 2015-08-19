@@ -1,16 +1,20 @@
 #!/bin/bash -e
 
-current_version=$(node -p "require('./package').version")
-current_tag="v$current_version"
+printf "Which tag do you want to build the docs for? "
+read tag
 
-npm run build-docs
+git checkout $tag -- docs
+git reset docs
 
-git checkout gh-pages
+cp docs/README.md SUMMARY.md
+cp -r docs/* .
 
-rm -rf $current_tag
-mv _book $current_tag
+gitbook build
 
-git add $current_tag
-git commit -m "Update $current_version docs"
+rm -rf $tag
+mv _book $tag
+
+git add $tag
+git commit -m "Update $tag docs"
 
 #git push git@github.com:rackt/history gh-pages

@@ -1,9 +1,6 @@
 {
   "gitbook": "2.x.x",
   "title": "history",
-  "structure": {
-    "summary": "docs/README.md"
-  },
   "links": {
     "sharing": {
       "google": false,
