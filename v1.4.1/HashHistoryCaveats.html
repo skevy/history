@@ -1,0 +1,298 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Caveats of Using Hash History | history</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.2.0">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="gitbook/plugins/gitbook-plugin-versions/plugin.css">
+        
+    
+    
+
+        
+    
+    
+    
+    <link rel="prev" href="./QuerySupport.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book" data-level="5" data-basepath="." data-revision="Wed Aug 19 2015 15:41:09 GMT-0700 (PDT)">
+    
+
+<div class="book-summary">
+    <div class="book-search">
+        <input type="text" placeholder="Type to search" class="form-control" />
+    </div>
+    <ul class="summary">
+        
+        
+        
+        
+
+        
+
+        
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="./index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Introduction
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="GettingStarted.html">
+            
+                
+                    <a href="./GettingStarted.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        Getting Started
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="Location.html">
+            
+                
+                    <a href="./Location.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        Location
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="ConfirmingNavigation.html">
+            
+                
+                    <a href="./ConfirmingNavigation.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Confirming Navigation
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="QuerySupport.html">
+            
+                
+                    <a href="./QuerySupport.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        Query Support
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="5" data-path="HashHistoryCaveats.html">
+            
+                
+                    <a href="./HashHistoryCaveats.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        Caveats of Using Hash History
+                    </a>
+            
+            
+        </li>
+    
+
+
+        
+        <li class="divider"></li>
+        <li>
+            <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                Published with GitBook
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="Table of Contents"><i class="fa fa-align-justify"></i></a>
+    <a href="#" class="btn pull-left toggle-search" aria-label="Search"><i class="fa fa-search"></i></a>
+    
+    <div id="font-settings-wrapper" class="dropdown pull-left">
+        <a href="#" class="btn toggle-dropdown" aria-label="Font Settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="buttons">
+        <button type="button" id="reduce-font-size" class="button size-2">A</button>
+        <button type="button" id="enlarge-font-size" class="button size-2">A</button>
+    </div>
+
+    <div class="buttons font-family-list">
+        <button type="button" data-font="0" class="button">Serif</button>
+        <button type="button" data-font="1" class="button">Sans</button>
+    </div>
+
+    <div class="buttons color-theme-list">
+        <button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">White</button>
+        <button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">Sepia</button>
+        <button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">Night</button>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Actions Right -->
+    
+    <div class="dropdown pull-right">
+        <a href="#" class="btn toggle-dropdown" aria-label="Share"><i class="fa fa-share-alt"></i>
+        </a>
+        <div class="dropdown-menu font-settings dropdown-left">
+            <div class="dropdown-caret">
+                <span class="caret-outer"></span>
+                <span class="caret-inner"></span>
+            </div>
+            <div class="buttons">
+                <button type="button" data-sharing="twitter" class="button">
+                    Share on Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    Share on Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    Share on Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    Share on Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    Share on Instapaper
+                </button>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    
+    
+    
+    
+
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="./" >history</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <h2 id="caveats-of-using-hash-history">Caveats of Using Hash History</h2>
+<p>Using <code>window.location.hash</code> is a common trick that is used to mimic the HTML5 history API in older browsers. It works for most use cases and provides good compatibility across a wide range of browsers. However, in order to preserve state across browser sessions we need a place to store some state.</p>
+<p>HTML5 gives us the <code>pushState</code> method and the <code>popstate</code> event, but in older browsers the only thing we have is the URL. So, when using hash history, you&apos;ll see an extra item in your query string that looks something like <code>_k=123abc</code>. This is a key that <code>history</code> uses to look up persistent state data in <code>window.sessionStorage</code> between page loads. If you prefer to use a different query parameter, or to opt-out of this behavior entirely, use the <code>queryKey</code> configuration option.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> createHistory <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;history/lib/createHashHistory&apos;</span>;
+
+<span class="hljs-comment">// Use _key instead of _k.</span>
+<span class="hljs-keyword">var</span> history = createHistory({
+  queryKey: <span class="hljs-string">&apos;_key&apos;</span>
+});
+
+<span class="hljs-comment">// Opt-out of persistent state, not recommended.</span>
+<span class="hljs-keyword">var</span> history = createHistory({
+  queryKey: <span class="hljs-literal">false</span>
+});
+</code></pre>
+<p>One other thing to keep in mind when using hash history is that you cannot also use <code>window.location.hash</code> as it was originally intended, to link an anchor point within your HTML document.</p>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="./QuerySupport.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Query Support"><i class="fa fa-angle-left"></i></a>
+        
+        
+    </div>
+</div>
+
+        
+<script src="gitbook/app.js"></script>
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-github/github.js"></script>
+    
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-versions/plugin.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2},"github":{"url":"https://github.com/rackt/history"},"versions":{"options":[{"value":"https://rackt.github.io/history/v1.4.0/","text":"Version 1.4.0","selected":true}]}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>
