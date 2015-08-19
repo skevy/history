@@ -7,9 +7,10 @@ npm run build-docs
 
 git checkout gh-pages
 
+rm -rf $current_tag
 mv _book $current_tag
 
 git add $current_tag
 git commit -m "Update $current_version docs"
 
-#git push -f git@github.com:rackt/history gh-pages
+#git push git@github.com:rackt/history gh-pages
