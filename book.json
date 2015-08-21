@@ -19,9 +19,9 @@
     "versions": {
       "gitbookConfigURL": "https://raw.githubusercontent.com/rackt/history/gh-pages/book.json",
       "options": [
-        { "value": "https://rackt.github.io/history/v1.4.1/", "text": "Version 1.4.1" },
+        { "value": "https://rackt.github.io/history/v1.6.0/", "text": "Version 1.6.0", "selected": true },
         { "value": "https://rackt.github.io/history/v1.5.0/", "text": "Version 1.5.0" },
-        { "value": "https://rackt.github.io/history/v1.6.0/", "text": "Version 1.6.0", "selected": true }
+        { "value": "https://rackt.github.io/history/v1.4.1/", "text": "Version 1.4.1" }
       ]
     }
   }
