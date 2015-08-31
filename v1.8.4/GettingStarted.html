@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Glossary | history</title>
+        <title>Getting Started | history</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.2.0">
@@ -29,6 +29,10 @@
         
     
     
+    <link rel="next" href="./Location.html" />
+    
+    
+    <link rel="prev" href="./index.html" />
     
 
         
@@ -36,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="" data-basepath="." data-revision="Sun Aug 30 2015 22:30:06 GMT-0700 (PDT)">
+    <div class="book" data-level="1" data-basepath="." data-revision="Sun Aug 30 2015 22:56:32 GMT-0700 (PDT)">
     
 
 <div class="book-summary">
@@ -66,7 +70,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1" data-path="GettingStarted.html">
+        <li class="chapter active" data-level="1" data-path="GettingStarted.html">
             
                 
                     <a href="./GettingStarted.html">
@@ -141,10 +145,10 @@
             
         </li>
     
-        <li class="chapter " data-level="6" data-path="Glossary.html">
+        <li class="chapter " data-level="6" data-path="Terms.html">
             
                 
-                    <a href="./Glossary.html">
+                    <a href="./Terms.html">
                 
                         <i class="fa fa-check"></i>
                         
@@ -175,8 +179,6 @@
     <!-- Actions Left -->
     <a href="#" class="btn pull-left toggle-summary" aria-label="Table of Contents"><i class="fa fa-align-justify"></i></a>
     <a href="#" class="btn pull-left toggle-search" aria-label="Search"><i class="fa fa-search"></i></a>
-    
-    <a href="./GLOSSARY.html" class="btn pull-left" aria-label="Glossary"><i class="fa fa-sort-alpha-asc"></i></a>
     
     <div id="font-settings-wrapper" class="dropdown pull-left">
         <a href="#" class="btn toggle-dropdown" aria-label="Font Settings"><i class="fa fa-font"></i>
@@ -254,35 +256,82 @@
             <div class="page-wrapper" tabindex="-1">
                 <div class="page-inner">
                 
-    
-    <section class="normal glossary" id="glossary">
-        <h2><a href="#glossary">Glossary</a></h2>
-        <p>This is a glossary of common terms used in the history codebase and documentation listed in alphabetical order, along with their [type signatures](http://flowtype.org/docs/quick-reference.html).</p>
-        <ul class="glossary-index">
-        
-            <li><a href="./Glossary.html"><span class="level">6.</span> Glossary</a></li>
-        
-        </ul>
-    </section>
-    
-    <section class="normal glossary" id="transition">
-        <h2><a href="#transition">Transition</a></h2>
-        <p>A *transition* is the process of notifying listeners when the [location](#location) changes. It is not an API; rather, it is a concept. Transitions may be interrupted by [transition hooks](#transitionhook). </p>
-        <ul class="glossary-index">
-        
-            <li><a href="./Glossary.html"><span class="level">6.</span> Glossary</a></li>
-        
-            <li><a href="./ConfirmingNavigation.html"><span class="level">3.</span> Confirming Navigation</a></li>
-        
-        </ul>
-    </section>
-    
+                
+                    <section class="normal" id="section-">
+                    
+                        <h2 id="getting-started">Getting Started</h2>
+<p>The first thing you&apos;ll need to do is create a <a href="Terms.html#history">history object</a>. The main <code>history</code> module exports several different <a href="Terms.html#createhistory"><code>create*</code> methods</a> that you can use depending on your environment.</p>
+<ul>
+<li><code>createHistory</code> is for use in modern web browsers that support the <a href="http://diveintohtml5.info/history.html" target="_blank">HTML5 history API</a> (see <a href="http://caniuse.com/#feat=history" target="_blank">cross-browser compatibility</a>)</li>
+<li><code>createHashHistory</code> is for use in legacy web browsers (see <a href="HashHistoryCaveats.html">caveats of using hash history</a>)</li>
+<li><code>createMemoryHistory</code> is used mainly for testing and does not persist state across sessions</li>
+</ul>
+<p>Once you get a <code>history</code> object, use <code>history.listen</code> to be notified when <a href="Location.html">the <code>location</code></a> changes.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> { createHistory } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;history&apos;</span>;
 
+<span class="hljs-keyword">var</span> history = createHistory();
+
+<span class="hljs-comment">// Listen for changes to the current location. The</span>
+<span class="hljs-comment">// listener is called once immediately.</span>
+<span class="hljs-keyword">var</span> unlisten = history.listen(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">location</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(location.pathname);
+});
+
+<span class="hljs-comment">// When you&apos;re finished, stop the listener.</span>
+unlisten();
+</code></pre>
+<h3 id="navigation">Navigation</h3>
+<p>You can also use a <code>history</code> object to programmatically change the current <code>location</code> using the following methods:</p>
+<ul>
+<li><code>pushState(state, path)</code></li>
+<li><code>replaceState(state, path)</code></li>
+<li><code>setState(state)</code></li>
+<li><code>go(n)</code></li>
+<li><code>goBack()</code></li>
+<li><code>goForward()</code></li>
+</ul>
+<p>The <a href="Terms.html#path"><code>path</code></a> argument to <code>pushState</code> and <code>replaceState</code> represents a complete URL path, including the <a href="Terms.html#querystring">query string</a>. The <a href="Terms.html#locationstate"><code>state</code></a> argument should be a JSON-serializable object. In <code>setState</code>, the properties in <code>state</code> are shallowly merged into the current state.</p>
+<pre><code class="lang-js"><span class="hljs-comment">// Push a new entry onto the history stack.</span>
+history.pushState({ some: <span class="hljs-string">&apos;state&apos;</span> }, <span class="hljs-string">&apos;/home&apos;</span>);
+
+<span class="hljs-comment">// Replace the current entry on the history stack.</span>
+history.replaceState({ some: <span class="hljs-string">&apos;other state&apos;</span> }, <span class="hljs-string">&apos;/profile&apos;</span>);
+
+<span class="hljs-comment">// Go back to the previous history entry. The following</span>
+<span class="hljs-comment">// two lines are synonymous.</span>
+history.go(-<span class="hljs-number">1</span>);
+history.goBack();
+</code></pre>
+<p>To prevent the user from navigating away from a page, or to prompt them before they do, see the documentation on <a href="ConfirmingNavigation.html">confirming navigation</a>.</p>
+<h3 id="creating-urls">Creating URLs</h3>
+<p>Additionally, <code>history</code> objects can be used to create URL paths and/or <code>href</code>s for <code>&lt;a&gt;</code> tags that link to various places in your app. This is useful when using hash history to prefix URLs with a <code>#</code> or when using <a href="QuerySupport.html">query support</a> to automatically build query strings.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> href = history.createHref(<span class="hljs-string">&apos;/the/path&apos;</span>);
+</code></pre>
+<h3 id="minimizing-your-build">Minimizing Your Build</h3>
+<p>Using the main <code>history</code> module is a great way to get up and running quickly. However, you probably don&apos;t need to include all the various history implementations in your production bundle. To keep your build as small as possible, import only the functions you need directly from <code>history/lib</code>.</p>
+<pre><code class="lang-js"><span class="hljs-comment">// Browser history</span>
+<span class="hljs-keyword">import</span> createHistory <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;history/lib/createBrowserHistory&apos;</span>;
+
+<span class="hljs-comment">// Hash history</span>
+<span class="hljs-keyword">import</span> createHistory <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;history/lib/createHashHistory&apos;</span>;
+
+<span class="hljs-comment">// Memory history</span>
+<span class="hljs-keyword">import</span> createHistory <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;history/lib/createMemoryHistory&apos;</span>;
+</code></pre>
+
+                    
+                    </section>
+                
+                
                 </div>
             </div>
         </div>
 
         
+        <a href="./index.html" class="navigation navigation-prev " aria-label="Previous page: Introduction"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="./Location.html" class="navigation navigation-next " aria-label="Next page: Location"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
@@ -300,7 +349,7 @@
 
 <script>
 require(["gitbook"], function(gitbook) {
-    var config = {"fontSettings":{"theme":null,"family":"sans","size":2},"github":{"url":"https://github.com/rackt/history"},"versions":{"gitbookConfigURL":"https://raw.githubusercontent.com/rackt/history/gh-pages/book.json","options":[{"value":"https://rackt.github.io/history/v1.8.3/","text":"Version 1.8.3","selected":true},{"value":"https://rackt.github.io/history/v1.8.0/","text":"Version 1.8.0"},{"value":"https://rackt.github.io/history/v1.7.0/","text":"Version 1.7.0"},{"value":"https://rackt.github.io/history/v1.6.0/","text":"Version 1.6.0"},{"value":"https://rackt.github.io/history/v1.5.0/","text":"Version 1.5.0"},{"value":"https://rackt.github.io/history/v1.4.1/","text":"Version 1.4.1"}]}};
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2},"github":{"url":"https://github.com/rackt/history"},"versions":{"gitbookConfigURL":"https://raw.githubusercontent.com/rackt/history/gh-pages/book.json","options":[{"value":"https://rackt.github.io/history/v1.8.4/","text":"Version 1.8.4","selected":true},{"value":"https://rackt.github.io/history/v1.8.0/","text":"Version 1.8.0"},{"value":"https://rackt.github.io/history/v1.7.0/","text":"Version 1.7.0"},{"value":"https://rackt.github.io/history/v1.6.0/","text":"Version 1.6.0"},{"value":"https://rackt.github.io/history/v1.5.0/","text":"Version 1.5.0"},{"value":"https://rackt.github.io/history/v1.4.1/","text":"Version 1.4.1"}]}};
     gitbook.start(config);
 });
 </script>

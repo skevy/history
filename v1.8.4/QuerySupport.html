@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Caveats of Using Hash History | history</title>
+        <title>Query Support | history</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.2.0">
@@ -29,10 +29,10 @@
         
     
     
-    <link rel="next" href="./Glossary.html" />
+    <link rel="next" href="./HashHistoryCaveats.html" />
     
     
-    <link rel="prev" href="./QuerySupport.html" />
+    <link rel="prev" href="./ConfirmingNavigation.html" />
     
 
         
@@ -40,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="5" data-basepath="." data-revision="Sun Aug 30 2015 22:30:06 GMT-0700 (PDT)">
+    <div class="book" data-level="4" data-basepath="." data-revision="Sun Aug 30 2015 22:56:32 GMT-0700 (PDT)">
     
 
 <div class="book-summary">
@@ -115,7 +115,7 @@
             
         </li>
     
-        <li class="chapter " data-level="4" data-path="QuerySupport.html">
+        <li class="chapter active" data-level="4" data-path="QuerySupport.html">
             
                 
                     <a href="./QuerySupport.html">
@@ -130,7 +130,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="5" data-path="HashHistoryCaveats.html">
+        <li class="chapter " data-level="5" data-path="HashHistoryCaveats.html">
             
                 
                     <a href="./HashHistoryCaveats.html">
@@ -145,10 +145,10 @@
             
         </li>
     
-        <li class="chapter " data-level="6" data-path="Glossary.html">
+        <li class="chapter " data-level="6" data-path="Terms.html">
             
                 
-                    <a href="./Glossary.html">
+                    <a href="./Terms.html">
                 
                         <i class="fa fa-check"></i>
                         
@@ -179,8 +179,6 @@
     <!-- Actions Left -->
     <a href="#" class="btn pull-left toggle-summary" aria-label="Table of Contents"><i class="fa fa-align-justify"></i></a>
     <a href="#" class="btn pull-left toggle-search" aria-label="Search"><i class="fa fa-search"></i></a>
-    
-    <a href="./GLOSSARY.html" class="btn pull-left" aria-label="Glossary"><i class="fa fa-sort-alpha-asc"></i></a>
     
     <div id="font-settings-wrapper" class="dropdown pull-left">
         <a href="#" class="btn toggle-dropdown" aria-label="Font Settings"><i class="fa fa-font"></i>
@@ -261,22 +259,31 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h2 id="caveats-of-using-hash-history">Caveats of Using Hash History</h2>
-<p>Using <code>window.location.hash</code> is a common trick that is used to mimic the HTML5 history API in older browsers. It works for most use cases and provides good compatibility across a wide range of browsers. However, in order to preserve state across browser sessions we need a place to store some state.</p>
-<p>HTML5 gives us the <code>pushState</code> method and the <code>popstate</code> event, but in older browsers the only thing we have is the URL. So, when using hash history, you&apos;ll see an extra item in your query string that looks something like <code>_k=123abc</code>. This is a key that <code>history</code> uses to look up persistent state data in <code>window.sessionStorage</code> between page loads. If you prefer to use a different query parameter, or to opt-out of this behavior entirely, use the <code>queryKey</code> configuration option.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> createHistory <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;history/lib/createHashHistory&apos;</span>;
+                        <h2 id="query-support">Query Support</h2>
+<p>Support for parsing and serializing <a href="Terms.html#query">URL queries</a> is provided by the <code>useQueries</code> <a href="Terms.html#createhistoryenhancer">enhancer</a> function. Simply use a wrapped version of your <code>createHistory</code> function to create your <code>history</code> object and you&apos;ll have a parsed <code>location.query</code> object inside <code>listen</code>.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> { createHistory, useQueries } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;history&apos;</span>;
 
-<span class="hljs-comment">// Use _key instead of _k.</span>
-<span class="hljs-keyword">var</span> history = createHistory({
-  queryKey: <span class="hljs-string">&apos;_key&apos;</span>
+<span class="hljs-comment">// Use the built-in query parsing/serialization.</span>
+<span class="hljs-keyword">var</span> history = useQueries(createHistory)();
+
+<span class="hljs-comment">// Use custom query parsing/serialization.</span>
+<span class="hljs-keyword">var</span> history = useQueries(createHistory)({
+  parseQueryString: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">queryString</span>) </span>{
+    <span class="hljs-keyword">return</span> qs.parse(queryString);
+  },
+  stringifyQuery: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">query</span>) </span>{
+    <span class="hljs-keyword">return</span> qs.stringify(query, { arrayFormat: <span class="hljs-string">&apos;brackets&apos;</span> });
+  }
 });
 
-<span class="hljs-comment">// Opt-out of persistent state, not recommended.</span>
-<span class="hljs-keyword">var</span> history = createHistory({
-  queryKey: <span class="hljs-literal">false</span>
+history.listen(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">location</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(location.query);
 });
 </code></pre>
-<p>One other thing to keep in mind when using hash history is that you cannot also use <code>window.location.hash</code> as it was originally intended, to link an anchor point within your HTML document.</p>
+<p>Query-used histories also accept URL queries as trailing arguments to <code>pushState</code>, <code>replaceState</code>, <code>createPath</code>, and <code>createHref</code>.</p>
+<pre><code class="lang-js">history.createPath(<span class="hljs-string">&apos;/the/path&apos;</span>, { the: <span class="hljs-string">&apos;query&apos;</span> });
+history.pushState(<span class="hljs-literal">null</span>, <span class="hljs-string">&apos;/the/path&apos;</span>, { the: <span class="hljs-string">&apos;query&apos;</span> });
+</code></pre>
 
                     
                     </section>
@@ -287,10 +294,10 @@
         </div>
 
         
-        <a href="./QuerySupport.html" class="navigation navigation-prev " aria-label="Previous page: Query Support"><i class="fa fa-angle-left"></i></a>
+        <a href="./ConfirmingNavigation.html" class="navigation navigation-prev " aria-label="Previous page: Confirming Navigation"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="./Glossary.html" class="navigation navigation-next " aria-label="Next page: Glossary"><i class="fa fa-angle-right"></i></a>
+        <a href="./HashHistoryCaveats.html" class="navigation navigation-next " aria-label="Next page: Caveats of Using Hash History"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
@@ -308,7 +315,7 @@
 
 <script>
 require(["gitbook"], function(gitbook) {
-    var config = {"fontSettings":{"theme":null,"family":"sans","size":2},"github":{"url":"https://github.com/rackt/history"},"versions":{"gitbookConfigURL":"https://raw.githubusercontent.com/rackt/history/gh-pages/book.json","options":[{"value":"https://rackt.github.io/history/v1.8.3/","text":"Version 1.8.3","selected":true},{"value":"https://rackt.github.io/history/v1.8.0/","text":"Version 1.8.0"},{"value":"https://rackt.github.io/history/v1.7.0/","text":"Version 1.7.0"},{"value":"https://rackt.github.io/history/v1.6.0/","text":"Version 1.6.0"},{"value":"https://rackt.github.io/history/v1.5.0/","text":"Version 1.5.0"},{"value":"https://rackt.github.io/history/v1.4.1/","text":"Version 1.4.1"}]}};
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2},"github":{"url":"https://github.com/rackt/history"},"versions":{"gitbookConfigURL":"https://raw.githubusercontent.com/rackt/history/gh-pages/book.json","options":[{"value":"https://rackt.github.io/history/v1.8.4/","text":"Version 1.8.4","selected":true},{"value":"https://rackt.github.io/history/v1.8.0/","text":"Version 1.8.0"},{"value":"https://rackt.github.io/history/v1.7.0/","text":"Version 1.7.0"},{"value":"https://rackt.github.io/history/v1.6.0/","text":"Version 1.6.0"},{"value":"https://rackt.github.io/history/v1.5.0/","text":"Version 1.5.0"},{"value":"https://rackt.github.io/history/v1.4.1/","text":"Version 1.4.1"}]}};
     gitbook.start(config);
 });
 </script>

@@ -5,9 +5,9 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Introduction | history</title>
+        <title>Confirming Navigation | history</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <meta name="description" content="build statusnpm packagereact-router channel on slack">
+        <meta name="description" content="">
         <meta name="generator" content="GitBook 2.2.0">
         
         
@@ -29,8 +29,10 @@
         
     
     
-    <link rel="next" href="./GettingStarted.html" />
+    <link rel="next" href="./QuerySupport.html" />
     
+    
+    <link rel="prev" href="./Location.html" />
     
 
         
@@ -38,7 +40,7 @@
     <body>
         
         
-    <div class="book" data-level="0" data-basepath="." data-revision="Sun Aug 30 2015 22:30:06 GMT-0700 (PDT)">
+    <div class="book" data-level="3" data-basepath="." data-revision="Sun Aug 30 2015 22:56:32 GMT-0700 (PDT)">
     
 
 <div class="book-summary">
@@ -55,7 +57,7 @@
 
         
     
-        <li class="chapter active" data-level="0" data-path="index.html">
+        <li class="chapter " data-level="0" data-path="index.html">
             
                 
                     <a href="./index.html">
@@ -98,7 +100,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3" data-path="ConfirmingNavigation.html">
+        <li class="chapter active" data-level="3" data-path="ConfirmingNavigation.html">
             
                 
                     <a href="./ConfirmingNavigation.html">
@@ -143,10 +145,10 @@
             
         </li>
     
-        <li class="chapter " data-level="6" data-path="Glossary.html">
+        <li class="chapter " data-level="6" data-path="Terms.html">
             
                 
-                    <a href="./Glossary.html">
+                    <a href="./Terms.html">
                 
                         <i class="fa fa-check"></i>
                         
@@ -177,8 +179,6 @@
     <!-- Actions Left -->
     <a href="#" class="btn pull-left toggle-summary" aria-label="Table of Contents"><i class="fa fa-align-justify"></i></a>
     <a href="#" class="btn pull-left toggle-search" aria-label="Search"><i class="fa fa-search"></i></a>
-    
-    <a href="./GLOSSARY.html" class="btn pull-left" aria-label="Glossary"><i class="fa fa-sort-alpha-asc"></i></a>
     
     <div id="font-settings-wrapper" class="dropdown pull-left">
         <a href="#" class="btn toggle-dropdown" aria-label="Font Settings"><i class="fa fa-font"></i>
@@ -259,34 +259,38 @@
                 
                     <section class="normal" id="section-">
                     
-                        <p><a href="https://travis-ci.org/rackt/history" target="_blank"><img src="https://img.shields.io/travis/rackt/history/master.svg?style=flat-square" alt="build status"></a>
-<a href="https://www.npmjs.org/package/history" target="_blank"><img src="https://img.shields.io/npm/v/history.svg?style=flat-square" alt="npm package"></a>
-<a href="http://www.reactiflux.com" target="_blank"><img src="https://img.shields.io/badge/slack-react--router@reactiflux-61DAFB.svg?style=flat-square" alt="react-router channel on slack"></a></p>
-<h2 id="history">history</h2>
-<p><a href="https://www.npmjs.com/package/history" target="_blank"><code>history</code></a> is a JavaScript library that lets you easily manage session history in browsers, testing environments, and (soon, via <a href="https://facebook.github.io/react-native/" target="_blank">React Native</a>) native devices. <code>history</code> abstracts away the differences in these different platforms and provides a minimal API that lets you manage the history stack, navigate, confirm navigation, and persist state between sessions. <code>history</code> is library-agnostic and may easily be included in any JavaScript project.</p>
-<h3 id="installation">Installation</h3>
-<pre><code>$ npm install history
-</code></pre><h3 id="basic-usage">Basic Usage</h3>
-<p>A &quot;history&quot; encapsulates navigation between different screens in your app, and notifies listeners when the current screen changes.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> { createHistory } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;history&apos;</span>;
-
-<span class="hljs-keyword">var</span> history = createHistory();
-
-<span class="hljs-comment">// Listen for changes to the current location. The</span>
-<span class="hljs-comment">// listener is called once immediately.</span>
-<span class="hljs-keyword">var</span> unlisten = history.listen(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">location</span>) </span>{
-  <span class="hljs-built_in">console</span>.log(location.pathname);
+                        <h2 id="confirming-navigation">Confirming Navigation</h2>
+<p>Sometimes you may want to prevent the user from going to a different page. For example, if they are halfway finished filling out a long form, and they click the back button, you may want to prompt them to confirm they actually want to leave the page before they lose the information they&apos;ve already entered. For these cases, <code>history</code> lets you register <a href="Terms.html#transitionhook">transition hooks</a> that return a prompt message you can show the user before the <a href="Terms.html#location">location</a> changes. For example, you could do something like this:</p>
+<pre><code class="lang-js">history.registerTransitionHook(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">location</span>) </span>{
+  <span class="hljs-keyword">if</span> (input.value !== <span class="hljs-string">&apos;&apos;</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&apos;Are you sure you want to leave this page?&apos;</span>;
 });
-
-history.pushState({ the: <span class="hljs-string">&apos;state&apos;</span> }, <span class="hljs-string">&apos;/the/path?a=query&apos;</span>);
-
-<span class="hljs-comment">// When you&apos;re finished, stop the listener.</span>
-unlisten();
 </code></pre>
-<p>Read more about getting started <a href="http://rackt.github.io/history/stable/GettingStarted.html" target="_blank">in the documentation</a>!</p>
-<h3 id="thanks">Thanks</h3>
-<p>A big thank-you to <a href="https://www.npmjs.com/~dshaw" target="_blank">Dan Shaw</a> for letting us use the <code>history</code> npm package name! Thanks Dan!</p>
-<p>Also, thanks to <a href="https://www.browserstack.com/" target="_blank">BrowserStack</a> for providing the infrastructure that allows us to run our build in real browsers.</p>
+<p>You can also simply <code>return false</code> to prevent a <a href="Terms.html#transition">transition</a>.</p>
+<p>If your transition hook needs to execute asynchronously, you can provide a second <code>callback</code> argument to your transition hook function that you must call when you&apos;re done with async work.</p>
+<pre><code class="lang-js">history.registerTransitionHook(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">location, callback</span>) </span>{
+  doSomethingAsync().then(callback);
+});
+</code></pre>
+<p>Note: <strong>If you do provide a <code>callback</code> argument, the transition will not proceed until you call it (i.e. listeners will not be notified of the new <code>location</code>)! If your app is slow for some reason, this could lead to a non-responsive UI.</strong></p>
+<p>In browsers, <code>history</code> uses <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm" target="_blank"><code>window.confirm</code></a> by default to display confirmation messages to users. However, you can provide your own custom confirmation dialog box using the <code>getUserConfirmation</code> hook when you create your <code>history</code> object.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">var</span> history = createHistory({
+  getUserConfirmation: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">message, callback</span>) </span>{
+    callback(<span class="hljs-built_in">window</span>.confirm(message)); <span class="hljs-comment">// The default behavior</span>
+  }
+});
+</code></pre>
+<h3 id="the-beforeunload-event">The <code>beforeunload</code> Event</h3>
+<p>If you need to prevent a browser window or tab from closing, <code>history</code> provides the <code>useBeforeUnload</code> enhancer function.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> { createHistory, useBeforeUnload } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;history&apos;</span>;
+
+<span class="hljs-keyword">var</span> history = useBeforeUnload(createHistory)();
+
+history.registerBeforeUnloadHook(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-string">&apos;Are you sure you want to leave this page?&apos;</span>;
+});
+</code></pre>
+<p>Note that because of the nature of the <code>beforeunload</code> event all hooks must <code>return</code> synchronously. <code>history</code> runs all hooks in the order they were registered and displays the first message that is returned.</p>
 
                     
                     </section>
@@ -297,8 +301,10 @@ unlisten();
         </div>
 
         
+        <a href="./Location.html" class="navigation navigation-prev " aria-label="Previous page: Location"><i class="fa fa-angle-left"></i></a>
         
-        <a href="./GettingStarted.html" class="navigation navigation-next navigation-unique" aria-label="Next page: Getting Started"><i class="fa fa-angle-right"></i></a>
+        
+        <a href="./QuerySupport.html" class="navigation navigation-next " aria-label="Next page: Query Support"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
@@ -316,7 +322,7 @@ unlisten();
 
 <script>
 require(["gitbook"], function(gitbook) {
-    var config = {"fontSettings":{"theme":null,"family":"sans","size":2},"github":{"url":"https://github.com/rackt/history"},"versions":{"gitbookConfigURL":"https://raw.githubusercontent.com/rackt/history/gh-pages/book.json","options":[{"value":"https://rackt.github.io/history/v1.8.3/","text":"Version 1.8.3","selected":true},{"value":"https://rackt.github.io/history/v1.8.0/","text":"Version 1.8.0"},{"value":"https://rackt.github.io/history/v1.7.0/","text":"Version 1.7.0"},{"value":"https://rackt.github.io/history/v1.6.0/","text":"Version 1.6.0"},{"value":"https://rackt.github.io/history/v1.5.0/","text":"Version 1.5.0"},{"value":"https://rackt.github.io/history/v1.4.1/","text":"Version 1.4.1"}]}};
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2},"github":{"url":"https://github.com/rackt/history"},"versions":{"gitbookConfigURL":"https://raw.githubusercontent.com/rackt/history/gh-pages/book.json","options":[{"value":"https://rackt.github.io/history/v1.8.4/","text":"Version 1.8.4","selected":true},{"value":"https://rackt.github.io/history/v1.8.0/","text":"Version 1.8.0"},{"value":"https://rackt.github.io/history/v1.7.0/","text":"Version 1.7.0"},{"value":"https://rackt.github.io/history/v1.6.0/","text":"Version 1.6.0"},{"value":"https://rackt.github.io/history/v1.5.0/","text":"Version 1.5.0"},{"value":"https://rackt.github.io/history/v1.4.1/","text":"Version 1.4.1"}]}};
     gitbook.start(config);
 });
 </script>

@@ -5,9 +5,9 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Location | history</title>
+        <title>Introduction | history</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <meta name="description" content="">
+        <meta name="description" content="build statusnpm packagereact-router channel on slack">
         <meta name="generator" content="GitBook 2.2.0">
         
         
@@ -29,10 +29,8 @@
         
     
     
-    <link rel="next" href="./ConfirmingNavigation.html" />
+    <link rel="next" href="./GettingStarted.html" />
     
-    
-    <link rel="prev" href="./GettingStarted.html" />
     
 
         
@@ -40,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="2" data-basepath="." data-revision="Sun Aug 30 2015 22:30:06 GMT-0700 (PDT)">
+    <div class="book" data-level="0" data-basepath="." data-revision="Sun Aug 30 2015 22:56:32 GMT-0700 (PDT)">
     
 
 <div class="book-summary">
@@ -57,7 +55,7 @@
 
         
     
-        <li class="chapter " data-level="0" data-path="index.html">
+        <li class="chapter active" data-level="0" data-path="index.html">
             
                 
                     <a href="./index.html">
@@ -85,7 +83,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2" data-path="Location.html">
+        <li class="chapter " data-level="2" data-path="Location.html">
             
                 
                     <a href="./Location.html">
@@ -145,10 +143,10 @@
             
         </li>
     
-        <li class="chapter " data-level="6" data-path="Glossary.html">
+        <li class="chapter " data-level="6" data-path="Terms.html">
             
                 
-                    <a href="./Glossary.html">
+                    <a href="./Terms.html">
                 
                         <i class="fa fa-check"></i>
                         
@@ -179,8 +177,6 @@
     <!-- Actions Left -->
     <a href="#" class="btn pull-left toggle-summary" aria-label="Table of Contents"><i class="fa fa-align-justify"></i></a>
     <a href="#" class="btn pull-left toggle-search" aria-label="Search"><i class="fa fa-search"></i></a>
-    
-    <a href="./GLOSSARY.html" class="btn pull-left" aria-label="Glossary"><i class="fa fa-sort-alpha-asc"></i></a>
     
     <div id="font-settings-wrapper" class="dropdown pull-left">
         <a href="#" class="btn toggle-dropdown" aria-label="Font Settings"><i class="fa fa-font"></i>
@@ -261,20 +257,34 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h2 id="location">Location</h2>
-<p>A <a href="Glossary.html#location"><code>location</code> object</a> is conceptually similar to <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/location" target="_blank"><code>document.location</code> in web browsers</a>, with a few extra goodies. <code>location</code> objects have the following properties:</p>
-<pre><code>pathname      The pathname portion of the URL, without query string
-search        The query string portion of the URL, including the ?
-state         An object of data tied to this location
-action        One of PUSH, REPLACE, or POP
-key           A unique identifier for this location
-</code></pre><p>Support for query string parsing is provided using the <a href="QuerySupport.html"><code>useQueries</code> module</a>.</p>
-<h3 id="programmatic-creation">Programmatic Creation</h3>
-<p>You may occasionally need to create a <code>location</code> object, either for testing or when using <code>history</code> in a stateless environment (like a server). <code>history</code> exposes the <code>createLocation</code> API for this purpose.</p>
-<pre><code class="lang-js"><span class="hljs-keyword">import</span> createLocation <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;history/lib/createLocation&apos;</span>;
+                        <p><a href="https://travis-ci.org/rackt/history" target="_blank"><img src="https://img.shields.io/travis/rackt/history/master.svg?style=flat-square" alt="build status"></a>
+<a href="https://www.npmjs.org/package/history" target="_blank"><img src="https://img.shields.io/npm/v/history.svg?style=flat-square" alt="npm package"></a>
+<a href="http://www.reactiflux.com" target="_blank"><img src="https://img.shields.io/badge/slack-react--router@reactiflux-61DAFB.svg?style=flat-square" alt="react-router channel on slack"></a></p>
+<h2 id="history">history</h2>
+<p><a href="https://www.npmjs.com/package/history" target="_blank"><code>history</code></a> is a JavaScript library that lets you easily manage session history in browsers, testing environments, and (soon, via <a href="https://facebook.github.io/react-native/" target="_blank">React Native</a>) native devices. <code>history</code> abstracts away the differences in these different platforms and provides a minimal API that lets you manage the history stack, navigate, confirm navigation, and persist state between sessions. <code>history</code> is library-agnostic and may easily be included in any JavaScript project.</p>
+<h3 id="installation">Installation</h3>
+<pre><code>$ npm install history
+</code></pre><h3 id="basic-usage">Basic Usage</h3>
+<p>A &quot;history&quot; encapsulates navigation between different screens in your app, and notifies listeners when the current screen changes.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> { createHistory } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;history&apos;</span>;
 
-<span class="hljs-keyword">var</span> location = createLocation(<span class="hljs-string">&apos;/a/path?a=query&apos;</span>, { the: <span class="hljs-string">&apos;state&apos;</span> });
+<span class="hljs-keyword">var</span> history = createHistory();
+
+<span class="hljs-comment">// Listen for changes to the current location. The</span>
+<span class="hljs-comment">// listener is called once immediately.</span>
+<span class="hljs-keyword">var</span> unlisten = history.listen(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">location</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(location.pathname);
+});
+
+history.pushState({ the: <span class="hljs-string">&apos;state&apos;</span> }, <span class="hljs-string">&apos;/the/path?a=query&apos;</span>);
+
+<span class="hljs-comment">// When you&apos;re finished, stop the listener.</span>
+unlisten();
 </code></pre>
+<p>Read more about getting started <a href="http://rackt.github.io/history/stable/GettingStarted.html" target="_blank">in the documentation</a>!</p>
+<h3 id="thanks">Thanks</h3>
+<p>A big thank-you to <a href="https://www.npmjs.com/~dshaw" target="_blank">Dan Shaw</a> for letting us use the <code>history</code> npm package name! Thanks Dan!</p>
+<p>Also, thanks to <a href="https://www.browserstack.com/" target="_blank">BrowserStack</a> for providing the infrastructure that allows us to run our build in real browsers.</p>
 
                     
                     </section>
@@ -285,10 +295,8 @@ key           A unique identifier for this location
         </div>
 
         
-        <a href="./GettingStarted.html" class="navigation navigation-prev " aria-label="Previous page: Getting Started"><i class="fa fa-angle-left"></i></a>
         
-        
-        <a href="./ConfirmingNavigation.html" class="navigation navigation-next " aria-label="Next page: Confirming Navigation"><i class="fa fa-angle-right"></i></a>
+        <a href="./GettingStarted.html" class="navigation navigation-next navigation-unique" aria-label="Next page: Getting Started"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
@@ -306,7 +314,7 @@ key           A unique identifier for this location
 
 <script>
 require(["gitbook"], function(gitbook) {
-    var config = {"fontSettings":{"theme":null,"family":"sans","size":2},"github":{"url":"https://github.com/rackt/history"},"versions":{"gitbookConfigURL":"https://raw.githubusercontent.com/rackt/history/gh-pages/book.json","options":[{"value":"https://rackt.github.io/history/v1.8.3/","text":"Version 1.8.3","selected":true},{"value":"https://rackt.github.io/history/v1.8.0/","text":"Version 1.8.0"},{"value":"https://rackt.github.io/history/v1.7.0/","text":"Version 1.7.0"},{"value":"https://rackt.github.io/history/v1.6.0/","text":"Version 1.6.0"},{"value":"https://rackt.github.io/history/v1.5.0/","text":"Version 1.5.0"},{"value":"https://rackt.github.io/history/v1.4.1/","text":"Version 1.4.1"}]}};
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2},"github":{"url":"https://github.com/rackt/history"},"versions":{"gitbookConfigURL":"https://raw.githubusercontent.com/rackt/history/gh-pages/book.json","options":[{"value":"https://rackt.github.io/history/v1.8.4/","text":"Version 1.8.4","selected":true},{"value":"https://rackt.github.io/history/v1.8.0/","text":"Version 1.8.0"},{"value":"https://rackt.github.io/history/v1.7.0/","text":"Version 1.7.0"},{"value":"https://rackt.github.io/history/v1.6.0/","text":"Version 1.6.0"},{"value":"https://rackt.github.io/history/v1.5.0/","text":"Version 1.5.0"},{"value":"https://rackt.github.io/history/v1.4.1/","text":"Version 1.4.1"}]}};
     gitbook.start(config);
 });
 </script>
